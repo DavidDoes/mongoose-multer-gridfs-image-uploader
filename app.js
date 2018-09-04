@@ -55,7 +55,34 @@ const storage = new GridFsStorage({
     });
   }
 });
-const upload = multer({ storage });
+// const upload = multer({ storage });
+
+// Init uploaded
+const upload = multer({
+  // :storage is variable defined above
+  storage: storage,
+  limits: { fileSize: 10000000 }, // 10 MB - 10000000 bytes
+  fileFilter: function(req, file, cb){
+    checkFileType(file, cb); // defined below
+  }
+}).single('image') // name='' from form input
+
+// Check file type
+function checkFileType(file, cb){
+  // Check for extensions allowed
+  const filetypes = /jpeg|jpg|png|tif|tiff/;
+  // Check ext - test() js function on file's original name
+  const extname = filetypes.test(path.extname(file.originalname).toLowerCase()); 
+  // Check mimetype - users can easily change extension.
+  const mimetype = filetypes.test(file.mimetype); //see file object at bottom
+
+  if (mimetype && extname){
+    return cb(null, true)
+  } else {
+    cb('Error: Must be image of following mimetypes: jpeg, png, tiff');
+    // ISSUE - this is not reached, but instead the error handler in post router
+  }
+}
 
 // @route GET /
 // @desc loads form
@@ -66,7 +93,7 @@ app.get('/',(req, res) => {
 // @route POST /upload
 // @desc uploads file to db
 // ('image') is from index.html name='' field on form input
-app.post('/upload', upload.single('image'), (req, res) => {
+app.post('/upload', upload, (req, res) => {
 //  res.json({ file: req.file });
   res.redirect('/');
 });
