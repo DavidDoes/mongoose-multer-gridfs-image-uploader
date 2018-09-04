@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Page Title</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- <link rel="stylesheet" type="text/css" media="screen" href="main.css" /> -->
+  <script src="jquery-3.3.1.min.js"></script>
+  <script src="app.js"></script>
+</head>
+<body>
+
+  <div class='container' id='upload'>
+    <form role='form' class='js-upload' action='/upload' method='POST' enctype='multipart/form-data'>
+      <legend>Upload a Submission</legend>
+      <div>
+        <input type='file' name='image' id='image' class='js-file-input' required>
+        <label for='image' class='file-label'>Choose a file</label>
+      </div>
+      <input type='submit' value='Submit' class='button'>
+    </form>
+  </div>
+  
+</body>
+</html>
